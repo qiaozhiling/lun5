@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 
 class QzlViewPager(mContext: Context) : ViewPager(mContext) {
@@ -81,7 +80,7 @@ class QzlViewPager(mContext: Context) : ViewPager(mContext) {
         removeCallbacks(mRunnable)
     }
 
-    override fun getAdapter(): QzlViewPagerAdapter? {
+    override fun getAdapter(): QzlViewPagerAdapter {
         return super.getAdapter() as QzlViewPagerAdapter
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////

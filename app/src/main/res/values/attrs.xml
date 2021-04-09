@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="QzlProcessBar">
+        <attr name="progressBarSy" format="enum">
+            <enum name="circle" value="0" />
+            <enum name="line" value="1" />
+        </attr>
+        <attr name="showText" format="boolean" />
+        <attr name="innerBackColor" format="color" />
+        <attr name="outBackColor" format="color" />
+        <attr name="barWidth" format="dimension" />
+        <attr name="progressTextSize" format="dimension" />
+        <attr name="progressTextColor" format="color" />
+        <attr name="progressRate" format="integer" />
+    </declare-styleable>
+</resources>

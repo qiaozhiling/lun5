@@ -74,8 +74,8 @@ class QzlProcessBar(
             setMeasuredDimension(listOf(width, height).min()!!, listOf(width, height).min()!!)
         } else if (mProgressStyle == 1) {
             /**
-             * wrap_content=match_parent
-             *  dp 具体dp
+             *  宽度 wrap_content=match_parent
+             *      dp 具体dp
              * 根据画笔宽度 设置高度
              */
             setMeasuredDimension(width, (10 + mBarWidth).toInt())
@@ -85,11 +85,11 @@ class QzlProcessBar(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        val text = "%d%%".format(mProgressRate)
-        mTextPaint.getTextBounds(text, 0, text.length, mTextBounds)
-        val fontMetrics = mTextPaint.fontMetricsInt
-
         if (mProgressStyle == 0) {//圆
+
+            val text = "%d%%".format(mProgressRate)
+            mTextPaint.getTextBounds(text, 0, text.length, mTextBounds)
+            val fontMetrics = mTextPaint.fontMetricsInt
 
             val center = width / 2f //到中轴距离
             val radius = center - mBarWidth //圆心到圆内径
@@ -128,6 +128,7 @@ class QzlProcessBar(
         }
     }
 
+    @Deprecated("cause display error")
     fun changeBarStyle() {
         mProgressStyle = abs(mProgressStyle - 1)
         invalidate()

@@ -34,13 +34,18 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
     private var mShowTitle = true// 显示title
     private var mIndicatorPosition = 1 // 指示器位置   0左 1中 2右
     private var mDelay = 2000L
+    private var mIndicatorSize: Int = DensityUtil.dip2px(mContext, 5f)
 
     init {
         mContext.obtainStyledAttributes(attrs, R.styleable.QzlViewPagerHolder).apply {
             mShowTitle = getBoolean(R.styleable.QzlViewPagerHolder_showViewPagerTitle, mShowTitle)
             mDelay = getInteger(R.styleable.QzlViewPagerHolder_switchDelay, mDelay.toInt()).toLong()
+            mDelay = getInteger(R.styleable.QzlViewPagerHolder_switchDelay, mDelay.toInt()).toLong()
             mIndicatorPosition =
                 getInteger(R.styleable.QzlViewPagerHolder_indicatorPosition, mIndicatorPosition)
+            mIndicatorSize =
+                getDimensionPixelSize(R.styleable.QzlViewPagerHolder_indicatorSize, mIndicatorSize)
+            Log.i("mIndicatorSize", mIndicatorSize.toString())
             recycle()
         }
         initView()
@@ -141,7 +146,7 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
         repeat(mDataList.size) {
 
             val layoutParams = LayoutParams(
-                DensityUtil.dip2px(context, 5f), DensityUtil.dip2px(context, 5f)
+                mIndicatorSize, mIndicatorSize
             ).apply {
                 setMargins(
                     DensityUtil.dip2px(context, 5f),

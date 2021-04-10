@@ -7,6 +7,9 @@ import com.bumptech.glide.Glide
 import com.qzl.lun5.qzlviewpager.QzlViewPagerAdapter
 import com.qzl.lun5.qzlviewpager.QzlViewPagerBaseData
 
+/**
+ * 继承QzlViewPagerAdapter 使用时定义Adapter
+ */
 class UserAdapter(dataList: List<UserData>, private val context: Context) :
     QzlViewPagerAdapter(dataList) {
     override fun setIV(iv: ImageView, position: Int, dataList: List<QzlViewPagerBaseData>) {

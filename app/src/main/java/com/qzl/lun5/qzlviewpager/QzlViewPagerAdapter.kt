@@ -36,7 +36,7 @@ abstract class QzlViewPagerAdapter(private var dataList: List<QzlViewPagerBaseDa
 
         //设置ImageView显示 点击 等
         val realPosition = position % dataList.size
-        setIV(itemView, realPosition,dataList)
+        setIV(itemView, realPosition, dataList)
 
         if (itemView.parent is ViewGroup) (itemView.parent as ViewGroup).removeView(itemView)
         container.addView(itemView)

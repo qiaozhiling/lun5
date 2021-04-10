@@ -1,3 +1,3 @@
 package com.qzl.lun5.qzlviewpager
 
-open class QzlViewPagerBaseData(val title: String)
+open class QzlViewPagerBaseData(val title: String?)

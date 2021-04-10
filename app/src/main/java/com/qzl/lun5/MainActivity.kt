@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         qzlViewPagerHolder.apply {
             setAdapter(adapter)
-            setDelay(3000)
+            //setDelay(3000)
             setIndicatorStyle(getDrawable(R.drawable.oval_pink), getDrawable(R.drawable.oval_gray))
             setTitleBarColor("#55ff00ff")
             setTitleColor("#000000")
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private fun initData(): List<UserData> {
         return listOf(
             UserData(
-                "1_1国风妆造PK，名师在线点评"
+                null
                 ,
                 "https://i0.hdslb.com/bfs/feed-admin/6f5c54330a8dafcc26fea7dbc822762e16ca63d4.jpg@880w_388h_1c_95q"
                 ,

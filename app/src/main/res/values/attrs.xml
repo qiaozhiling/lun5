@@ -13,4 +13,14 @@
         <attr name="progressTextColor" format="color" />
         <attr name="progressRate" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="QzlViewPagerHolder">
+        <attr name="showViewPagerTitle" format="boolean" />
+        <attr name="switchDelay" format="integer" />
+        <attr name="indicatorPosition" format="enum">
+            <enum name="left" value="0" />
+            <enum name="mid" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>

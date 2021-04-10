@@ -12,11 +12,15 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
+import com.qzl.lun5.R
 import com.qzl.lun5.UserData
 import java.lang.reflect.Field
 
-class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet) :
-    RelativeLayout(mContext, attrs, 0) {
+class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: Int) :
+    RelativeLayout(mContext, attrs, defStyleAttr) {
+
+    constructor(mContext: Context, attrs: AttributeSet?) : this(mContext, attrs, 0)
+    constructor(mContext: Context) : this(mContext, null)
 
     private lateinit var mTitle: TextView//标题
     private lateinit var mPager: QzlViewPager//轮播View
@@ -27,7 +31,18 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet) :
     private var mBackgroundC: Drawable? = null//指示器 选中
     private var mBackground: Drawable? = null//指示器 未选择
 
+    private var mShowTitle = true// 显示title
+    private var mIndicatorPosition = 1 // 指示器位置   0左 1中 2右
+    private var mDelay = 2000L
+
     init {
+        mContext.obtainStyledAttributes(attrs, R.styleable.QzlViewPagerHolder).apply {
+            mShowTitle = getBoolean(R.styleable.QzlViewPagerHolder_showViewPagerTitle, mShowTitle)
+            mDelay = getInteger(R.styleable.QzlViewPagerHolder_switchDelay, mDelay.toInt()).toLong()
+            mIndicatorPosition =
+                getInteger(R.styleable.QzlViewPagerHolder_indicatorPosition, mIndicatorPosition)
+            recycle()
+        }
         initView()
         initEvent()
     }
@@ -37,34 +52,41 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet) :
         //轮播图
         mPager = QzlViewPager(context).apply {
             val params = LayoutParams(
-                LayoutParams.MATCH_PARENT
-                , LayoutParams.MATCH_PARENT
+                LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT
             )
-
+            setDelay(mDelay)
             this@QzlViewPagerHolder.addView(this, params)
         }
 
-        //标题
-        mTitle = TextView(context).apply {
-            val params = LayoutParams(
-                LayoutParams.MATCH_PARENT
-                , LayoutParams.WRAP_CONTENT
-            )
-            gravity = Gravity.CENTER_HORIZONTAL//内容水平居中
-            setTextColor(Color.parseColor("#ffffff"))//title文字颜色
-            setTypeface(null, Typeface.BOLD)//文字加粗
-            setBackgroundColor(Color.parseColor("#99666666"))//背景颜色
-            bringToFront()//前置
-            this@QzlViewPagerHolder.addView(this, params)
+        if (mShowTitle) {
+            //标题
+            mTitle = TextView(context).apply {
+                val params = LayoutParams(
+                    LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT
+                )
+                gravity = Gravity.CENTER_HORIZONTAL//内容水平居中
+                setTextColor(Color.parseColor("#ffffff"))//title文字颜色
+                setTypeface(null, Typeface.BOLD)//文字加粗
+                setBackgroundColor(Color.parseColor("#99666666"))//背景颜色
+                bringToFront()//前置
+                this@QzlViewPagerHolder.addView(this, params)
+            }
         }
+
 
         //指示器container
         mContainer = LinearLayout(context).apply {
             val params = LayoutParams(
-                LayoutParams.WRAP_CONTENT
-                , LayoutParams.WRAP_CONTENT
+                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT
             ).apply {
-                addRule(CENTER_HORIZONTAL)//水平居中
+                addRule(
+                    when (mIndicatorPosition) {
+                        0 -> ALIGN_PARENT_LEFT//靠左
+                        1 -> CENTER_HORIZONTAL//水平居中
+                        2 -> ALIGN_PARENT_RIGHT//靠右
+                        else -> CENTER_HORIZONTAL//水平居中
+                    }
+                )
                 addRule(ALIGN_PARENT_BOTTOM)//对齐parent底
                 setMargins(0, 0, 0, DensityUtil.dip2px(context, 5f))
             }
@@ -105,21 +127,27 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet) :
     private fun setDisplay(position: Int) {
 
         val realPosition = position % mDataList.size
-        mTitle.text = mDataList[realPosition].title
+        if (mShowTitle) {
+            mTitle.text =
+                "${
+                    if (mDataList[realPosition].title == null) {
+                        ""
+                    } else mDataList[realPosition].title
+                }"
+        }
 
         mContainer.removeAllViews()
 
         repeat(mDataList.size) {
 
             val layoutParams = LayoutParams(
-                DensityUtil.dip2px(context, 5f)
-                , DensityUtil.dip2px(context, 5f)
+                DensityUtil.dip2px(context, 5f), DensityUtil.dip2px(context, 5f)
             ).apply {
                 setMargins(
-                    DensityUtil.dip2px(context, 5f)
-                    , DensityUtil.dip2px(context, 0f)
-                    , DensityUtil.dip2px(context, 5f)
-                    , DensityUtil.dip2px(context, 0f)
+                    DensityUtil.dip2px(context, 5f),
+                    DensityUtil.dip2px(context, 0f),
+                    DensityUtil.dip2px(context, 5f),
+                    DensityUtil.dip2px(context, 0f)
                 )
             }
 
@@ -175,7 +203,7 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet) :
     * 设置标题栏的背景颜色
     **/
     fun setTitleBarColor(color: String) {
-        if (color.startsWith("#") || color.length in 7..9) {
+        if ((color.startsWith("#") || color.length in 7..9) && mShowTitle) {
             mTitle.setBackgroundColor(Color.parseColor(color))
         }
     }
@@ -185,8 +213,8 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet) :
     * 设置标题栏字体颜色
     * 默认白色#ffffff
     * */
-    fun setTitleColor(color: String="#ffffff") {
-        if (color.startsWith("#") || color.length in 7..9) {
+    fun setTitleColor(color: String = "#ffffff") {
+        if ((color.startsWith("#") || color.length in 7..9) && mShowTitle) {
             mTitle.setTextColor(Color.parseColor(color))
         }
     }
@@ -216,7 +244,7 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet) :
     * 改变轮播数据
     * */
     fun changeData(newData: List<UserData>) {
-        mPager.adapter?.apply {
+        mPager.adapter.apply {
             setAdapterData(newData)
             mDataList = newData
 

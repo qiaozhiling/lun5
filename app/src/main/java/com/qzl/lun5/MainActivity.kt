@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
             //setDelay(3000)
             //setIndicatorStyle(getDrawable(R.mipmap.bbb), getDrawable(R.mipmap.aaa))
             //setIndicatorStyle(getDrawable(R.drawable.oval_pink), getDrawable(R.drawable.oval_gray))
-            setTitleBarColor("#55ff00ff")
-            setTitleColor("#000000")
+            //setTitleBarColor("#55ff00ff")
+            //setTitleColor("#000000")
         }
 
         button.setOnClickListener {

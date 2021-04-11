@@ -34,7 +34,9 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
     private var mShowTitle = true// 是否显示title
     private var mIndicatorPosition = 1 // 指示器位置   0左 1中 2右
     private var mDelay = 2000L //轮播延迟
-    private var mIndicatorSize: Int = dip2px(mContext, 5f) //indicator大小SIZE
+    private var mIndicatorSize: Int = dip2px(mContext, 5f) //indicator大小
+    private var mTitleBarColor: Int = Color.parseColor("#99666666")
+    private var mTitleColor: Int = Color.parseColor("#ffffff")
 
     init {
         mContext.obtainStyledAttributes(attrs, R.styleable.QzlViewPagerHolder).apply {
@@ -49,6 +51,8 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
             mIndicatorSize =
                 getDimensionPixelSize(R.styleable.QzlViewPagerHolder_indicatorSize, mIndicatorSize)
 
+            mTitleBarColor = getColor(R.styleable.QzlViewPagerHolder_titleBarColor, mTitleBarColor)
+            mTitleColor = getColor(R.styleable.QzlViewPagerHolder_titleColor, mTitleColor)
             recycle()
         }
         initView()
@@ -73,9 +77,9 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
                     LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT
                 )
                 gravity = Gravity.CENTER_HORIZONTAL//内容水平居中
-                setTextColor(Color.parseColor("#ffffff"))//title文字颜色
+                setTextColor(mTitleColor)//title文字颜色
                 setTypeface(null, Typeface.BOLD)//文字加粗
-                setBackgroundColor(Color.parseColor("#99666666"))//背景颜色
+                setBackgroundColor(mTitleBarColor)//背景颜色
                 bringToFront()//前置
                 this@QzlViewPagerHolder.addView(this, params)
             }
@@ -193,13 +197,13 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
     /**
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
      */
-    private fun px2dip(context: Context, pxValue: Float): Int {
+    /*private fun px2dip(context: Context, pxValue: Float): Int {
         val scale = context.resources.displayMetrics.density
         return (pxValue / scale + 0.5f).toInt()
-    }
+    }*/
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    //对外暴露的控制函数
+    //对外的控制函数
 
     /*
     * setAdapter()
@@ -220,49 +224,6 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
 
         Log.i("size", mid.toString())
 
-    }
-
-    /*
-    * setTitleBarColor(color: String)
-    * 设置标题栏的背景颜色
-    **/
-    fun setTitleBarColor(color: String) {
-        if ((color.startsWith("#") || color.length in 7..9) && mShowTitle) {
-            mTitle.setBackgroundColor(Color.parseColor(color))
-        }
-    }
-
-    /*
-    * setTitleColor(color: String)
-    * 设置标题栏字体颜色
-    * 默认白色#ffffff
-    * */
-    fun setTitleColor(color: String = "#ffffff") {
-        if ((color.startsWith("#") || color.length in 7..9) && mShowTitle) {
-            mTitle.setTextColor(Color.parseColor(color))
-        }
-    }
-
-    /*
-    * setDelay(time: Long = 2000)
-    * 设置ViewPager滚动延时 默认2000ms
-    */
-    @Deprecated("useless")
-    fun setDelay(time: Long = 2000) {
-        mPager.setDelay(time)
-    }
-
-    /*
-    * setIndicatorStyle(mBackgroundC: Drawable?, mBackground: Drawable?)
-    * 设置Indicator样式 5dp*5dp 默认方形
-    * mBackgroundC 选中项
-    * mBackground 未选中项
-    */
-    @Deprecated("useless")
-    fun setIndicatorStyle(mBackgroundC: Drawable?, mBackground: Drawable?) {
-        this.mIndicatorC = mBackgroundC
-        this.mIndicator = mBackground
-        setDisplay(mPager.currentItem)
     }
 
     /*
@@ -289,6 +250,50 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
         }
 
         Log.i("changeData", mPager.currentItem.toString())
+    }
 
+    /*
+    * setTitleBarColor(color: String)
+    * 设置标题栏的背景颜色
+    **/
+    @Deprecated("useless")
+    fun setTitleBarColor(color: String) {
+        if ((color.startsWith("#") || color.length in 7..9) && mShowTitle) {
+            mTitle.setBackgroundColor(Color.parseColor(color))
+        }
+    }
+
+    /*
+    * setTitleColor(color: String)
+    * 设置标题栏字体颜色
+    * 默认白色#ffffff
+    * */
+    @Deprecated("useless")
+    fun setTitleColor(color: String = "#ffffff") {
+        if ((color.startsWith("#") || color.length in 7..9) && mShowTitle) {
+            mTitle.setTextColor(Color.parseColor(color))
+        }
+    }
+
+    /*
+    * setDelay(time: Long = 2000)
+    * 设置ViewPager滚动延时 默认2000ms
+    */
+    @Deprecated("useless")
+    fun setDelay(time: Long = 2000) {
+        mPager.setDelay(time)
+    }
+
+    /*
+    * setIndicatorStyle(mBackgroundC: Drawable?, mBackground: Drawable?)
+    * 设置Indicator样式 5dp*5dp 默认方形
+    * mBackgroundC 选中项
+    * mBackground 未选中项
+    */
+    @Deprecated("useless")
+    fun setIndicatorStyle(mBackgroundC: Drawable?, mBackground: Drawable?) {
+        this.mIndicatorC = mBackgroundC
+        this.mIndicator = mBackground
+        setDisplay(mPager.currentItem)
     }
 }

@@ -21,7 +21,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:showViewPagerTitle="true"
-        app:switchDelay="3000" />
+        app:switchDelay="3000"
+        app:titleBarColor="#68FFFFFF"
+        app:titleColor="@color/black"/>
 
     <com.qzl.lun5.qzlProcessBar.QzlProcessBar
         android:id="@+id/qzlProcessBar"

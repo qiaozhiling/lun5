@@ -32,6 +32,8 @@
             switchDelay 轮播延迟
             indicatorSize 指示器大小
             indicatorPosition 指示器位置
+            titleBarColor 标题栏背景颜色
+            titleColor 标题栏文字颜色
         -->
         <attr name="indicatorCStyle" format="reference|color" />
         <attr name="indicatorStyle" format="reference|color" />
@@ -43,5 +45,7 @@
             <enum name="mid" value="1" />
             <enum name="right" value="2" />
         </attr>
+        <attr name="titleBarColor" format="color"/>
+        <attr name="titleColor" format="color"/>
     </declare-styleable>
 </resources>

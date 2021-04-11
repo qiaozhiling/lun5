@@ -24,19 +24,19 @@ class QzlViewPager(mContext: Context) : ViewPager(mContext) {
             Log.i("Loop Handler", motionEvent.action.toString())
             when (motionEvent.action) {
 
-                //0
+                //0 点击
                 MotionEvent.ACTION_DOWN -> {
                     Log.i("Loop Handler", "ACTION_DOWN")
                     stopLoop()
                 }
 
-                //1
+                //1 放开
                 MotionEvent.ACTION_UP -> {
                     Log.i("Loop Handler", "ACTION_UP")
                     startLoop()
                 }
 
-                //2
+                //2 滑动
                 MotionEvent.ACTION_MOVE -> {
                     stopLoop()
                 }

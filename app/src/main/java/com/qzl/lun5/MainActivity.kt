@@ -15,8 +15,9 @@ class MainActivity : AppCompatActivity() {
 
         qzlViewPagerHolder.apply {
             setAdapter(adapter)
+            //adapter.setIV()
             //setDelay(3000)
-            setIndicatorStyle(getDrawable(R.mipmap.bbb), getDrawable(R.mipmap.aaa))
+            //setIndicatorStyle(getDrawable(R.mipmap.bbb), getDrawable(R.mipmap.aaa))
             //setIndicatorStyle(getDrawable(R.drawable.oval_pink), getDrawable(R.drawable.oval_gray))
             setTitleBarColor("#55ff00ff")
             setTitleColor("#000000")
@@ -35,8 +36,8 @@ class MainActivity : AppCompatActivity() {
             val min = 0
             val ran = (Math.random() * (max - min) + min).toInt()
             Log.i("ran", ran.toString())
-            qzlProcessBar.setProgressRate(ran)
-            qzlProcessBar2.setProgressRate(ran)
+            qzlProcessBar.setProgressRate(ran, 3000L * ran / 100)
+            qzlProcessBar2.setProgressRate(ran, 3000L * ran / 100)
         }
 
         button4.setOnClickListener {

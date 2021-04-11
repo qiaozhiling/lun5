@@ -10,8 +10,10 @@
         android:id="@+id/qzlViewPagerHolder"
         android:layout_width="match_parent"
         android:layout_height="158dp"
-        app:indicatorSize="15dp"
+        app:indicatorCStyle="@mipmap/bbb"
         app:indicatorPosition="right"
+        app:indicatorSize="15dp"
+        app:indicatorStyle="@mipmap/aaa"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -35,8 +37,7 @@
         app:layout_constraintVertical_bias="0.033"
         app:outBackColor="#5E98EF"
         app:progressBarSy="line"
-        app:progressRate="100"
-        app:progressTextSize="30dp" />
+        app:progressRate="100" />
 
     <Button
         android:id="@+id/button"
@@ -93,7 +94,6 @@
 
     <com.qzl.lun5.qzlProcessBar.QzlProcessBar
         android:id="@+id/qzlProcessBar2"
-        app:progressTextSize="25sp"
         android:layout_width="141dp"
         android:layout_height="251dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -101,6 +101,7 @@
         app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button5"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintVertical_bias="0.26"
+        app:progressTextSize="25sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

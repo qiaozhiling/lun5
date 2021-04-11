@@ -28,24 +28,27 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
     private lateinit var mDataList: List<QzlViewPagerBaseData>//数据列表
 
     //private lateinit var mAdapter: QzlViewPagerAdapter//适配器
-    private var mBackgroundC: Drawable? = null//指示器 选中
-    private var mBackground: Drawable? = null//指示器 未选择
+    private var mIndicatorC: Drawable? = null//指示器 选中
+    private var mIndicator: Drawable? = null//指示器 未选择
 
-    private var mShowTitle = true// 显示title
+    private var mShowTitle = true// 是否显示title
     private var mIndicatorPosition = 1 // 指示器位置   0左 1中 2右
-    private var mDelay = 2000L
-    private var mIndicatorSize: Int = DensityUtil.dip2px(mContext, 5f)
+    private var mDelay = 2000L //轮播延迟
+    private var mIndicatorSize: Int = dip2px(mContext, 5f) //indicator大小SIZE
 
     init {
         mContext.obtainStyledAttributes(attrs, R.styleable.QzlViewPagerHolder).apply {
             mShowTitle = getBoolean(R.styleable.QzlViewPagerHolder_showViewPagerTitle, mShowTitle)
             mDelay = getInteger(R.styleable.QzlViewPagerHolder_switchDelay, mDelay.toInt()).toLong()
-            mDelay = getInteger(R.styleable.QzlViewPagerHolder_switchDelay, mDelay.toInt()).toLong()
+
+            mIndicatorC = getDrawable(R.styleable.QzlViewPagerHolder_indicatorCStyle)
+            mIndicator = getDrawable(R.styleable.QzlViewPagerHolder_indicatorStyle)
+
             mIndicatorPosition =
                 getInteger(R.styleable.QzlViewPagerHolder_indicatorPosition, mIndicatorPosition)
             mIndicatorSize =
                 getDimensionPixelSize(R.styleable.QzlViewPagerHolder_indicatorSize, mIndicatorSize)
-            Log.i("mIndicatorSize", mIndicatorSize.toString())
+
             recycle()
         }
         initView()
@@ -91,9 +94,9 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
                         2 -> ALIGN_PARENT_RIGHT//靠右
                         else -> CENTER_HORIZONTAL//水平居中
                     }
-                )
-                addRule(ALIGN_PARENT_BOTTOM)//对齐parent底
-                setMargins(0, 0, 0, DensityUtil.dip2px(context, 5f))
+                )//水平对齐方式
+                addRule(ALIGN_PARENT_BOTTOM)//垂直对齐方式 对齐parent底
+                setMargins(0, 0, 0, dip2px(context, 5f))//右边缘间隔
             }
             //layoutParams = params
             this@QzlViewPagerHolder.addView(this, params)
@@ -149,16 +152,16 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
                 mIndicatorSize, mIndicatorSize
             ).apply {
                 setMargins(
-                    DensityUtil.dip2px(context, 5f),
-                    DensityUtil.dip2px(context, 0f),
-                    DensityUtil.dip2px(context, 5f),
-                    DensityUtil.dip2px(context, 0f)
-                )
+                    dip2px(context, 5f),
+                    dip2px(context, 0f),
+                    dip2px(context, 5f),
+                    dip2px(context, 0f)
+                )//左右间隔5dp
             }
 
             val view = View(context).apply {
 
-                if (mBackgroundC == null && mBackground == null) {
+                if (mIndicatorC == null && mIndicator == null) {
                     //默认指示器格样式
                     if (realPosition == it) {
                         setBackgroundColor(Color.parseColor("#ff5555"))
@@ -168,8 +171,8 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
                 } else {
                     //传入的样式
                     background = if (realPosition == it)
-                        mBackgroundC
-                    else mBackground
+                        mIndicatorC
+                    else mIndicator
                 }
 
                 setLayoutParams(layoutParams)
@@ -179,9 +182,25 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    private fun dip2px(context: Context, dpValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
+    }
 
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     */
+    private fun px2dip(context: Context, pxValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (pxValue / scale + 0.5f).toInt()
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     //对外暴露的控制函数
+
     /*
     * setAdapter()
     * 设置ViewPager的Adapter
@@ -228,6 +247,7 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
     * setDelay(time: Long = 2000)
     * 设置ViewPager滚动延时 默认2000ms
     */
+    @Deprecated("useless")
     fun setDelay(time: Long = 2000) {
         mPager.setDelay(time)
     }
@@ -238,9 +258,10 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
     * mBackgroundC 选中项
     * mBackground 未选中项
     */
+    @Deprecated("useless")
     fun setIndicatorStyle(mBackgroundC: Drawable?, mBackground: Drawable?) {
-        this.mBackgroundC = mBackgroundC
-        this.mBackground = mBackground
+        this.mIndicatorC = mBackgroundC
+        this.mIndicator = mBackground
         setDisplay(mPager.currentItem)
     }
 

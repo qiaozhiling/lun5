@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="QzlProcessBar">
+        <!--
+            progressBarSy 样式
+            showText 是否显示中间文字 line下无文字
+            innerBackColor 内圈颜色
+            outBackColor 外圈颜色
+            barWidth 条宽度
+            progressTextSize 中间文字大小
+            progressTextColor 中间文字颜色
+            progressRate 进度
+        -->
         <attr name="progressBarSy" format="enum">
             <enum name="circle" value="0" />
             <enum name="line" value="1" />
@@ -15,6 +25,16 @@
     </declare-styleable>
 
     <declare-styleable name="QzlViewPagerHolder">
+        <!--
+            indicatorCStyle 指示器（选中）样式
+            indicatorStyle 指示器（未选中）样式
+            showViewPagerTitle 是否显示标题栏
+            switchDelay 轮播延迟
+            indicatorSize 指示器大小
+            indicatorPosition 指示器位置
+        -->
+        <attr name="indicatorCStyle" format="reference|color" />
+        <attr name="indicatorStyle" format="reference|color" />
         <attr name="showViewPagerTitle" format="boolean" />
         <attr name="switchDelay" format="integer" />
         <attr name="indicatorSize" format="dimension" />

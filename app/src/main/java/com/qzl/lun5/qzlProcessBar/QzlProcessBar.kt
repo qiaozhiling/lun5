@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -30,12 +31,12 @@ class QzlProcessBar(
     private var mProgressTextSize = 15 //进度文字大小
     private var mProgressTextColor = Color.BLACK //进度字颜色
     private var mProgressRate: Int //进度 单位%
-    private var mProgressStyle: Int //样式 0圆 1条
+    private var mProgressStyle: Int //BAR样式 0圆 1条
     private var mShowText = true //显示进度文字
-    private var mLock = false
+    private var mLock = false //显示刷新锁 防止重进入
 
-    private val mTextBounds = Rect()
-    private val mInnerPaint: Paint
+    private val mTextBounds = Rect() //?
+    private val mInnerPaint: Paint //内层画笔
     private val mOutPaint: Paint
     private val mTextPaint: Paint
 
@@ -43,7 +44,9 @@ class QzlProcessBar(
         context.obtainStyledAttributes(attrs, R.styleable.QzlProcessBar).apply {
             mInnerBackColor = getColor(R.styleable.QzlProcessBar_innerBackColor, mInnerBackColor)
             mOutBackColor = getColor(R.styleable.QzlProcessBar_outBackColor, mOutBackColor)
+
             mBarWidth = getDimension(R.styleable.QzlProcessBar_barWidth, mBarWidth)
+
             mProgressTextSize =
                 getDimensionPixelSize(R.styleable.QzlProcessBar_progressTextSize, mProgressTextSize)
             mProgressTextColor =
@@ -51,11 +54,10 @@ class QzlProcessBar(
             mProgressRate = (getInteger(R.styleable.QzlProcessBar_progressRate, 0))
                 .let { if (it > 100) 100; else if (it < 0) 0; else it }
             mProgressStyle = getInt(R.styleable.QzlProcessBar_progressBarSy, 0)
-            mShowText = getBoolean(R.styleable.QzlProcessBar_showText, mShowText)
-            recycle()
 
-            Log.i("LOG", mBarWidth.toString())
-            Log.i("LOG", mProgressTextSize.toString())
+            mShowText = getBoolean(R.styleable.QzlProcessBar_showText, mShowText)
+
+            recycle()
         }
 
         mInnerPaint = getCirclePaint(mInnerBackColor, mBarWidth)
@@ -78,6 +80,8 @@ class QzlProcessBar(
              *      dp 具体dp
              * 根据画笔宽度 设置高度
              */
+
+
             setMeasuredDimension(width, (10 + mBarWidth).toInt())
         }
     }
@@ -124,39 +128,12 @@ class QzlProcessBar(
 
                 drawLine(startX, universalY, maxX, universalY, mOutPaint)
                 drawLine(startX, universalY, stopX, universalY, mInnerPaint)
+
             }
         }
     }
 
-    @Deprecated("cause display error")
-    fun changeBarStyle() {
-        mProgressStyle = abs(mProgressStyle - 1)
-        invalidate()
-    }
-
-    /**
-     * 设置进度
-     */
-    fun setProgressRate(rate: Int, duration: Long = 2000) {
-        if (rate in 0..100) {
-            processAnimate(0, rate, duration)
-        }
-    }
-
-    /**
-     * 增加进度
-     */
-    fun addProgressRate(rateToAdd: Int, duration: Long = 2000) {
-        if (rateToAdd in -100..100 && rateToAdd + mProgressRate in 0..100) {
-            processAnimate(mProgressRate, mProgressRate + rateToAdd, duration)
-        } else if (rateToAdd in -100..100 && rateToAdd + mProgressRate > 100) {
-            processAnimate(mProgressRate, 100, duration)
-        } else if (rateToAdd in -100..100 && rateToAdd + mProgressRate < 0) {
-            processAnimate(mProgressRate, 0, duration)
-        }
-    }
-
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     private fun processAnimate(from: Int, to: Int, duration: Long) {
         if (!mLock) {
             mLock = true
@@ -188,4 +165,52 @@ class QzlProcessBar(
         this.color = color
         this.textSize = textSize.toFloat()
     }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    private fun dip2px(context: Context, dpValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
+    }
+
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     */
+    private fun px2dip(context: Context, pxValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (pxValue / scale + 0.5f).toInt()
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //对外
+
+    @Deprecated("cause display error")
+    fun changeBarStyle() {
+        mProgressStyle = abs(mProgressStyle - 1)
+        invalidate()
+    }
+
+    /**
+     * 设置进度
+     */
+    fun setProgressRate(rate: Int, duration: Long = 0) {
+        if (rate in 0..100) {
+            processAnimate(0, rate, duration)
+        }
+    }
+
+    /**
+     * 增加进度
+     */
+    fun addProgressRate(rateToAdd: Int, duration: Long = 0) {
+        if (rateToAdd in -100..100 && rateToAdd + mProgressRate in 0..100) {
+            processAnimate(mProgressRate, mProgressRate + rateToAdd, duration)
+        } else if (rateToAdd in -100..100 && rateToAdd + mProgressRate > 100) {
+            processAnimate(mProgressRate, 100, duration)
+        } else if (rateToAdd in -100..100 && rateToAdd + mProgressRate < 0) {
+            processAnimate(mProgressRate, 0, duration)
+        }
+    }
+
 }

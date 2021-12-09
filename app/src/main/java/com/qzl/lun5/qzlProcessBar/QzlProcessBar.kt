@@ -46,7 +46,7 @@ class QzlProcessBar(
             mOutBackColor = getColor(R.styleable.QzlProcessBar_outBackColor, mOutBackColor)
 
             mBarWidth = getDimension(R.styleable.QzlProcessBar_barWidth, mBarWidth)
-
+ 
             mProgressTextSize =
                 getDimensionPixelSize(R.styleable.QzlProcessBar_progressTextSize, mProgressTextSize)
             mProgressTextColor =

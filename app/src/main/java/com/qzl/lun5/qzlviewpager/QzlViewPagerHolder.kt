@@ -13,7 +13,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.qzl.lun5.R
-import com.qzl.lun5.UserData
 import java.lang.reflect.Field
 
 class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: Int) :
@@ -230,7 +229,7 @@ class QzlViewPagerHolder(mContext: Context, attrs: AttributeSet?, defStyleAttr: 
     * changeData(newData: List<UserData>)
     * 改变轮播数据
     * */
-    fun changeData(newData: List<UserData>) {
+    fun changeData(newData: List<QzlViewPagerBaseData>) {
         mPager.adapter.apply {
             setAdapterData(newData)
             mDataList = newData

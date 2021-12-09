@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
-import com.qzl.lun5.UserData
 
 abstract class QzlViewPagerAdapter(private var dataList: List<QzlViewPagerBaseData>) :
     PagerAdapter() {
@@ -51,7 +50,7 @@ abstract class QzlViewPagerAdapter(private var dataList: List<QzlViewPagerBaseDa
     //设置ImageView显示 点击 等
     abstract fun setIV(iv: ImageView, position: Int, dataList: List<QzlViewPagerBaseData>)
 
-    fun setAdapterData(data: List<UserData>) {
+    fun setAdapterData(data: List<QzlViewPagerBaseData>) {
         this.dataList = data
     }
 
